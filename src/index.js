@@ -20,22 +20,21 @@ function onSearch(e) {
     return;
   }
   fetchCountries(name)
-    .then(name)
     .then(response => {
       if (response.length > 10) {
         Notiflix.Notify.info(
           'Too many matches found. Please enter a more specific name.'
         );
+      } else if (response.length === 1) {
+        countryFullInfo(response);
       } else {
-        if (response.length === 1) {
-          countryFullInfo(response);
-        } else {
-          countrySearchList(response);
-        }
+        countrySearchList(response);
       }
     })
-    .catch(error => {})
-    .finally(() => {});
+    .catch(error =>
+      Notiflix.Notify.failure('Oops, there is no country with that name.')
+    );
+  // .finally(() => {});
 }
 
 function cleanInput() {
@@ -48,8 +47,8 @@ function countryFullInfo(name) {
     .map(({ name, flags, capital, population, languages }) => {
       return `<img 
       src="${flags.svg}" 
-      alt="${name.official}" width = "25" height = "15" />
-      <h1>${name.official}</h1>
+      alt="${name}" width = "45" height = "25" />
+      <h1>${name}</h1>
           <p>Capital: ${capital}</p>
           <p>Population: ${population}</p>
           <p>Languages: ${languages.map(el => el.name).join(', ')}</p>`;
@@ -64,10 +63,10 @@ function countrySearchList(name) {
     .map(({ name, flags }) => {
       return `<li>
     <img src="${flags.svg}" 
-    alt="${name.official}" 
-    width = "25" 
-    height = "15" />
-  <p>${name.official}</p>
+    alt="${name}" 
+    width = "35" 
+    height = "25" />
+  <p>${name}</p>
 </li>`;
     })
     .join('');
