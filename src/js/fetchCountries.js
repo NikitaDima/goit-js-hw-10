@@ -1,5 +1,4 @@
 export default fetchCountries;
-import Notiflix from 'notiflix';
 
 function fetchCountries(name) {
   return fetch(
